@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href='{% static "blog/styles.css" %}'>
+    <link rel="icon" href="{% static 'blog/blog.ico' %}" sizes="any">
+    <title>GreatBlog | Managing {{ entry.title }}</title>
+</head>
+<body>
+    <navbar class="nav">
+        <div class="logo">    
+            <a href="/">GreatBlog</a>
+        </div>
+        {% if not user.id %}
+        <div class="link-container">
+            <a href="{% url 'login' %}" class="link">Sign in</a>
+            <a href="{% url 'register' %}" class="link">Sign up</a>
+        </div>
+        {% else %}
+        <div class="link-container">
+            <a href="{% url 'profile' user.username %}" class="link">Profile</a>
+            <a href="{% url 'logout' %}" class="link">Log out</a>
+        </div>
+        {% endif %}
+    </navbar>
+    <div class="container_center">
+        <div class="form_container">
+            <h1>Manage your entry</h1>
+            <form method="post" action="{% url 'edit_entry' entry_id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.title.label_tag }} {{ form.title }}
+                {{ form.content.label_tag }} {{ form.content }}
+                <label for="thumbnail">Thumbnail:</label>
+                <input type="file" name="thumbnail" accept="image/*">
+                
+                <input type="submit" value="Update Blog Entry">
+            </form>
+            <form action="{% url 'remove_entry' entry_id %}" method="post" id="remove">
+                {% csrf_token %}
+                <input type="submit" value="Remove entry" style="background-color: red;">
+            </form>
+        </div>
+    </div>
+    <script>
+        const form = document.querySelector("#remove");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const sure = confirm("Are you sure you want to remove this blog post?");
+            if (sure) form.submit();
+        })
+    </script>
+</body>
+</html>

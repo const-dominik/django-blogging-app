@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href='{% static "blog/styles.css" %}'>
+    <link rel="icon" href="{% static 'blog/blog.ico' %}" sizes="any">
+    <title>GreatBlog | {{ entry.author.user_with_token.user.username }} | {{ entry.title }}</title>
+</head>
+<body>
+    <navbar class="nav">
+        <div class="logo">    
+            <a href="/">GreatBlog</a>
+        </div>
+        {% if not user.id %}
+        <div class="link-container">
+            <a href="{% url 'login' %}" class="link">Sign in</a>
+            <a href="{% url 'register' %}" class="link">Sign up</a>
+        </div>
+        {% else %}
+        <div class="link-container">
+            <a href="{% url 'add_entry' %}" class="link">Add entry</a>
+            <a href="{% url 'profile' user.username %}" class="link">Profile</a>
+            <a href="{% url 'logout' %}" class="link">Log out</a>
+        </div>
+        {% endif %}
+    </navbar>
+    <div class="container_split">
+        <div class="left">
+            <div class="info">
+                <div class="link-container">
+                    {% with username=entry.author.user_with_token.user.username %}
+                    <a href="{% url 'profile' username %}" class="link" style="margin: 0 auto;">Author - {{username}}</a>
+                    {% endwith %}
+                </div>
+                <h3 class='date'>{{entry.created_at}}</h3>
+            </div>
+            <div style="display: flex; align-items: center; max-height: 50%;">
+                <img src="{{ entry.thumbnail.url }}" alt="Entry thumbnail" class="thumbnail">
+            </div>
+        </div>
+        <div class="right">
+            <h1 class="title">{{entry.title}}</h1>
+            <p>{{entry.content}}</p>
+        </div>
+    </div>
+</body>
+</html>

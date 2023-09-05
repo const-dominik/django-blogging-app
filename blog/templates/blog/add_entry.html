@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href='{% static "blog/styles.css" %}'>
+    <link rel="icon" href="{% static 'blog/blog.ico' %}" sizes="any">
+    <title>GreatBlog | Adding new entry</title>
+</head>
+<body>
+    <navbar class="nav">
+        <div class="logo">    
+            <a href="/">GreatBlog</a>
+        </div>
+        {% if not user.id %}
+        <div class="link-container">
+            <a href="{% url 'login' %}" class="link">Sign in</a>
+            <a href="{% url 'register' %}" class="link">Sign up</a>
+        </div>
+        {% else %}
+        <div class="link-container">
+            <a href="{% url 'profile' user.username %}" class="link">Profile</a>
+            <a href="{% url 'logout' %}" class="link">Log out</a>
+        </div>
+        {% endif %}
+    </navbar>
+    <div class="container_center">
+        <div class="form_container form_new_entry">
+            <h1>Add blog entry</h1>
+            <div class="error">{{ error }}</div>
+            <div class="success">{{ success }}</div>
+            <form method="post" action="{% url 'add_entry' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Add!">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

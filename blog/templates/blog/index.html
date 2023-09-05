@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href='{% static "blog/styles.css" %}'>
+    <link rel="icon" href="{% static 'blog/blog.ico' %}" sizes="any">
+    <title>GreatBlog | Astounding blog app!</title>
+</head>
+<body>
+    <navbar class="nav">
+        <div class="logo">    
+            <a href="/">GreatBlog</a>
+        </div>
+        {% if not user.id %}
+        <div class="link-container">
+            <a href="{% url 'login' %}" class="link">Sign in</a>
+            <a href="{% url 'register' %}" class="link">Sign up</a>
+        </div>
+        {% else %}
+        <div class="link-container">
+            <a href="{% url 'add_entry' %}" class="link">Add entry</a>
+            <a href="{% url 'profile' user.username %}" class="link">Profile</a>
+            <a href="{% url 'logout' %}" class="link">Log out</a>
+        </div>
+        {% endif %}
+    </navbar>
+    <div class="indexcontainer">
+        {% if last_entries|length %}
+        {% if user.id %}
+        <form method="GET" action="" class="onefielder">
+            {{ form.as_p }}
+        </form>
+        {% endif %}
+        {% if form.filter_type.value == 'followed' %}
+        <h2>Entries from followers</h2>
+        {% else %}
+        <h2>Recent entries</h2>
+        {% endif %}
+        <div class="entries">
+            {% for entry in last_entries %}
+            <div class="entry">
+                <img src="{{entry.thumbnail.url}}" alt="">
+                <div class="entry-content">
+                    <div class="author">
+                        <a href="{% url 'profile' entry.author %}" class="link">Author - {{entry.author}}</a>
+                    </div>
+                    <h2 class="title">{{entry.title}}</h2>
+                    <p class="content">{{entry.content}}</p>
+                    <div class="link-container readmore">
+                        <a href="{% url 'entry_detail' entry.id %}" class="link">Read more</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="loadMore">
+            <div">
+                Load more
+            </div>
+        </div>
+        {% else %}
+        <h2>No entries available. :(</h2>
+        {% endif %}
+    </div>
+    <script>
+        let loaded = Number("{{ last_entries|length }}");
+        const generateEntry = (entry) => {
+            const entryContainer = document.createElement("entry")
+            entryContainer.classList.add("entry")
+            const thumbnail = document.createElement("img");
+            thumbnail.setAttribute("src", entry.thumbnail);
+            thumbnail.setAttribute("alt", "thumbnail");
+            const entryContent = document.createElement("div");
+            entryContent.classList.add("entry-content");
+            const author = document.createElement("div");
+            author.classList.add('author');
+            const profile = document.createElement("a");
+            profile.classList.add('link');
+            const url = window.location.href + 'profile/' + entry.author.username;
+            profile.setAttribute("href", url);
+            profile.textContent = `Author - ${entry.author.username}`;
+            author.appendChild(profile);
+            const title = document.createElement("h2");
+            title.classList.add('title');
+            title.textContent = entry.title;
+            const content = document.createElement('p');
+            content.classList.add("content");
+            content.textContent = entry.content;
+            const readMore = document.createElement("div");
+            readMore.classList.add("link-container", "readmore");
+            const readMoreLink = document.createElement("a");
+            readMoreLink.classList.add("link");
+            const urlPost = window.location.href + 'posts/' + entry.id;
+            readMoreLink.setAttribute('href', urlPost);
+            readMoreLink.textContent = "Read more";
+            readMore.appendChild(readMoreLink);
+            [author, title, content, readMore].forEach(el => entryContent.appendChild(el));
+            [thumbnail, entryContent].forEach(el => entryContainer.appendChild(el));
+            return entryContainer;
+        }
+
+        document.querySelector("#loadMore").addEventListener('click', async e => {
+            const followedOrRecent = window.location.href.includes('followed') ? "followed" : "recent";
+            const tokenElement = '{% csrf_token %}';
+            const regex = /value="(.+)"/;
+            const [, token] = tokenElement.match(regex);
+            const resp = await fetch("{% url 'load' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    lastLoaded: loaded,
+                    followedOrRecent: followedOrRecent
+                })
+            });
+            const data = await resp.json();
+            if (!data.length) document.querySelector("#loadMore").style.display = "none";
+            const entries = document.querySelector(".entries");
+            data.forEach(entry => entries.appendChild(generateEntry(entry)));
+            loaded += data.length;
+        });
+
+        const form = document.querySelector("form");
+        if (form)
+            form.addEventListener('change', () => form.submit())
+    </script>
+</body>
+</html>

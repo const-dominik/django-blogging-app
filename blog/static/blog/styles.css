@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container_center {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #EDB88B;
+}
+
+.container_split {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #EDB88B;
+}
+
+.w50 {
+    width: 50% !important;
+}
+
+.h50 {
+    height: 50% !important;
+}
+
+.container_split > div {
+    width: 50%;
+}
+
+.form_container {
+    width: 75%;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    background-color: #FAD8D6;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.form_container h1 {
+    margin-bottom: 1rem;
+}
+
+.form_new_entry {
+    width: 50% !important;
+    height: 66% !important;
+}
+
+.form_container h1, h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+form label {
+    align-self: flex-start;
+    margin-left: 15%;
+}
+
+form input {
+    padding: .4rem;
+    width: 70%;
+}
+
+form li {
+    list-style: none;
+}
+
+.helptext {
+    margin-bottom: 1rem;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.success {
+    color: green;
+    text-align: center;
+}
+
+.thumbnail {
+    width: 75%;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.logo {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 0.4rem;
+    border-radius: 4px;
+    background-color: #271528;
+    color: #EDB88B;
+    font-size: 2rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin: auto 0;
+    margin-left: 5%
+}
+
+.logo a {
+  text-decoration: none;
+}
+
+.logo a:active,
+.logo a:visited {
+  color: inherit;
+}
+
+.nav {
+    height: 10vh;
+    background-color: #6874E8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.link-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+  
+.link {
+    background: #48284A;
+    color: #EDB88B;
+    display: inline;
+    border-radius: 4px;
+    font-weight: 600;
+    margin: 1rem;
+    padding: 0.4rem 1rem;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.link:active,
+.link:visited {
+    color: #EDB88B;
+}
+
+form input, form textarea {
+    margin-bottom: 0.7rem;
+    font-size: 1.2rem;
+}
+
+input.title {
+    width: 70%;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    margin: 0.3rem;
+    outline: none;
+    border: 0;
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.16);
+}
+
+form input[type='submit'] {
+    border: 0;
+    cursor: pointer;
+    width: 70%;
+    background: #F29792;
+    font-size: 1.5rem;
+    font-weight: 400;
+    border-radius: 10px;
+}
+
+form textarea {
+    padding: 0.2rem;
+    font-size: 1.2rem;
+    width: 70%;
+}
+
+.manage ul li {
+    list-style: url('../../media/photos/default/pencil.svg');
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dotted black;
+}
+
+.manage ul li a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.manage ul li a:visited, .manage ul li a:active {
+    color: black;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+}
+
+.date {
+    font-size: 1.2rem;
+}
+
+.user-card {
+    width: 70%;
+    height: 100%;
+    border-radius: 20px;
+    margin: auto;
+    background-color: #FAD8D6;
+    text-align: center;
+}
+
+.user-card .avatar {
+    margin: auto;
+    padding: 1rem;
+    max-width: 100%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: block;
+}
+
+.user-card .name {
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid black;;
+    border-top: 1px solid black;
+}
+
+.user-card .about {
+    margin-bottom: 2rem;
+}
+
+.user-card .followers {
+    padding-bottom: 2rem;
+}
+
+.right {
+    margin-right: 10%;
+}
+
+h1.title {
+    margin-bottom: 2rem;
+}
+
+form.onefielder {
+    display: inline-block;
+}
+
+body {
+    background-color: #EDB88B;
+}
+
+.indexcontainer {
+    height: 90vh;
+}
+
+.entries {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.entry {
+    display: flex;
+    flex-basis: 50%;
+    max-width: 40vw;
+    width: 40vw;
+    height: 33vh;
+    max-height: 33vh;
+    margin: 5rem;
+    border-radius: 20px;
+    padding: 1rem;
+    background: #FAD8D6;
+}
+
+.entry .title {
+    margin: 1rem auto;
+}
+
+.entry img {
+    min-width: 40%;
+    max-width: 40%;
+    object-fit: contain;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    margin-right: 1rem;
+}
+
+.entry .entry-content {
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+}
+
+.entry .content {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
+}
+
+.entry .readmore {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.entry .author {
+    margin: 0;
+}
+
+
+#loadMore {
+    margin: auto;
+    width: 10%;
+    height: 10%;
+    border-radius: 20px;
+    color: #EDB88B;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor:pointer;
+    font-weight: bold;
+    background: #48284A;
+    margin-bottom: 2rem;
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href='{% static "blog/styles.css" %}'>
+    <link rel="icon" href="{% static 'blog/blog.ico' %}" sizes="any">
+    <title>GreatBlog | Your profile</title>
+</head>
+<body>
+    <navbar class="nav">
+        <div class="logo">    
+            <a href="/">GreatBlog</a>
+        </div>
+        {% if not user.id %}
+        <div class="link-container">
+            <a href="{% url 'login' %}" class="link">Sign in</a>
+            <a href="{% url 'register' %}" class="link">Sign up</a>
+        </div>
+        {% else %}
+        <div class="link-container">
+            <a href="{% url 'add_entry' %}" class="link">Add entry</a>
+            <a href="{% url 'profile' user.username %}" class="link">Profile</a>
+            <a href="{% url 'logout' %}" class="link">Log out</a>
+        </div>
+        {% endif %}
+    </navbar>
+    {% with profile=user.userwithauthtoken.profile %}
+    {% if profile.blogentry_set.all.count %}
+    <div class="container_split">
+        {% else %}
+    <div class="container_center">
+    {% endif %}
+        <div>
+            <div class="form_container">
+                <h2>Edit your profile</h2>
+                <form method="POST" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Edit">
+                </form>
+                <div class="link-container">
+                    <a href="{% url 'change_password' %}" class="link" style="margin:auto; display: inline-block;">Change password</a>
+                </div>
+            </div>
+        </div>
+        {% if profile.blogentry_set.all.count %}
+        <div class="manage">
+            <div class="form_container" style="margin-left: 2rem;">
+                <h2 style="margin-bottom: 1rem;">Manage your entries:</h2>
+                <ul>
+                    {% for entry in profile.blogentry_set.all %}
+                    <li><a href="{% url 'edit_entry' entry.id %}">{{ entry.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endwith %}
+</body>
+</html>

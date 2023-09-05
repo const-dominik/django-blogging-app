@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href='{% static "blog/styles.css" %}'>
+    <link rel="icon" href="{% static 'blog/blog.ico' %}" sizes="any">
+
+    <title>GreatBlog | {{ user.username }} profile</title>
+</head>
+<body>
+    <navbar class="nav">
+        <div class="logo">    
+            <a href="/">GreatBlog</a>
+        </div>
+        {% if not req_user.id %}
+        <div class="link-container">
+            <a href="{% url 'login' %}" class="link">Sign in</a>
+            <a href="{% url 'register' %}" class="link">Sign up</a>
+        </div>
+        {% else %}
+        <div class="link-container">
+            <a href="{% url 'add_entry' %}" class="link">Add entry</a>
+            {% if req_user.username != user.username %}
+            <a href="{% url 'profile' req_user.username %}" class="link">Profile</a>
+            {% else %}
+            <a href="{% url 'edit_profile' %}" class="link">Edit profile</a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="link">Log out</a>
+        </div>
+        {% endif %}
+    </navbar>
+    {% with profile=user.userwithauthtoken.profile %}
+    <div class="container_split">
+        <div>
+            <div class="user-card">
+                <img src="{{ profile.avatar.url }}" alt="user pfp" class="avatar">
+                <p class="name">{{ user.username }}</p>
+                <p class="about">{{ profile.about_me }}</p>
+                <p class="followers">Followed by {{ profile.followers.all.count }} users.</p>
+                {% if req_user.username != user.username and req_user.id and not is_following %}
+                <form action="{% url 'follow' user.username 0 %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Follow">
+                </form>
+                {% endif %}
+                {% if is_following %}
+                <form action="{% url 'follow' user.username 1 %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="Unfollow">
+                </form>
+        
+                {% endif %}
+            </div>
+        </div>
+        <div class="manage">
+            <div class="form_container">
+                {% if profile.blogentry_set.all %}
+                <h2 style="margin-bottom: 1rem;">{{user.username}}'s blog entries:</h2>
+                <ul>
+                    {% for entry in profile.blogentry_set.all %}
+                    <li><a href="{% url 'entry_detail' entry.id %}">{{ entry.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <h2>{{user.username}} doesn't have any entries yet.</h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endwith %}
+</body>
+</html>
